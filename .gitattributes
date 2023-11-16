@@ -1,6 +1,10 @@
 *.sh        text    eol=lf
 *.config    text    eol=lf
 *.in        text    eol=lf
+# Not sure if this actually helps - 
+# should probably be set in the .gitattributes of the submodule
+# but I didn't want to add a commit to the submodule.
+tpls/llvm/llvm/cmake/config.guess eol=lf
 
 # Configure what will be included in source releases
 .devcontainer export-ignore

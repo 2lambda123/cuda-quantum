@@ -403,9 +403,7 @@ endif()
 
 # Directory setup
 # ==============================================================================
-if (CUDAQ_ENABLE_PYTHON)
-  add_subdirectory(tpls/pybind11)
-endif()
+find_package(pybind11 REQUIRED)
 
 add_subdirectory(cmake)
 add_subdirectory(include)
