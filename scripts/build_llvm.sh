@@ -60,7 +60,7 @@ echo "Configured C++ compiler: $CXX"
 
 # Prepare the build directory
 mkdir -p "$LLVM_INSTALL_PREFIX"
-mkdir -p "$llvm_source/build" && cd "$llvm_source/build" # && rm -rf *
+mkdir -p "$llvm_source/build" && cd "$llvm_source/build"
 mkdir -p logs && rm -rf logs/* 
 
 # Specify which components we need to keep the size of the LLVM build down
@@ -86,15 +86,14 @@ echo "- including general tools and components"
 llvm_components+="cmake-exports;llvm-headers;llvm-libraries;"
 llvm_components+="llvm-config;llvm-ar;llc;FileCheck;count;not;"
 
-# some possibly useful components:
-# libclang-python-bindings, MLIRPythonModules, core-resource-headers;clang-resource-headers
-
 if [ "$(echo ${projects[*]} | xargs)" != "" ]; then
   echo "- including additional projects "$(echo "${projects[*]}" | xargs | tr ' ' ',')
   unset llvm_components
   install_target=install
 else 
   install_target=install # Fixme: should be install-distribution-stripped
+  # some possibly useful components or python bindings:
+  # libclang-python-bindings, MLIRPythonModules, core-resource-headers;clang-resource-headers
 fi
 
 # A hack, since otherwise the build can fail due to line endings in the LLVM script:
@@ -108,6 +107,7 @@ cmake_args="-G Ninja ../llvm \
   -DCMAKE_INSTALL_PREFIX="$LLVM_INSTALL_PREFIX" \
   -DLLVM_ENABLE_PROJECTS="$llvm_projects" \
   -DLLVM_DISTRIBUTION_COMPONENTS=$llvm_components \
+  -DLLVM_ENABLE_BINDINGS=OFF \
   -DMLIR_ENABLE_BINDINGS_PYTHON=TRUE \
   -DLLVM_ENABLE_ASSERTIONS=ON \
   -DLLVM_OPTIMIZED_TABLEGEN=ON \
