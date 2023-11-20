@@ -34,8 +34,8 @@ RUN echo "Building wheel for python${python_version}." \
     && export CUDAQ_EXTERNAL_NVQIR_SIMS=$(bash scripts/find_wheel_assets.sh assets) \
     && export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$(pwd)/assets" \
     && $python -m pip install --no-cache-dir \
-        cmake auditwheel pybind11==2.10 \
-        cuquantum-cu11==23.6.0 \
+        cmake auditwheel \
+        cuquantum-cu11==23.10.0 \
     && cuquantum_location=`$python -m pip show cuquantum-cu11 | grep -e 'Location: .*$'` \
     && export CUQUANTUM_INSTALL_PREFIX="${cuquantum_location#Location: }/cuquantum" \
     && ln -s $CUQUANTUM_INSTALL_PREFIX/lib/libcustatevec.so.1 $CUQUANTUM_INSTALL_PREFIX/lib/libcustatevec.so \

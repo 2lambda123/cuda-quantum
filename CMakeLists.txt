@@ -122,8 +122,15 @@ endif()
 if(NOT CUSTATEVEC_ROOT)
   SET(CUSTATEVEC_ROOT "$ENV{CUQUANTUM_INSTALL_PREFIX}")
 endif()
+if(NOT CUTENSORNET_ROOT)
+  SET(CUTENSORNET_ROOT "$ENV{CUQUANTUM_INSTALL_PREFIX}")
+endif()
 if(NOT OPENSSL_ROOT_DIR)	
   SET(OPENSSL_ROOT_DIR "$ENV{OPENSSL_INSTALL_PREFIX}")	
+endif()
+if(NOT BLAS_LIBRARIES AND EXISTS "$ENV{BLAS_INSTALL_PREFIX}/libblas.a")
+  # CACHE INTERNAL is needed due to how FindBLAS.cmake works...
+  SET(BLAS_LIBRARIES "$ENV{BLAS_INSTALL_PREFIX}/libblas.a" CACHE INTERNAL "")	
 endif()
 
 SET(CMAKE_SKIP_BUILD_RPATH FALSE)
@@ -403,7 +410,9 @@ endif()
 
 # Directory setup
 # ==============================================================================
-find_package(pybind11 REQUIRED)
+if (CUDAQ_ENABLE_PYTHON)
+  add_subdirectory(tpls/pybind11)
+endif()
 
 add_subdirectory(cmake)
 add_subdirectory(include)
